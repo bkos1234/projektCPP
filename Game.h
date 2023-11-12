@@ -7,21 +7,16 @@
 class Game
 {
 public:
-	Game();
+	Game(sf::RenderWindow& window);
 	void run();
 
-
-
 private:
-	sf::RenderWindow window;
+	sf::RenderWindow& window;
 	Player player;
 	bool isRunning;
 	Environment environment;
 
-
 	void processEvents();
 	void update();
 	void render();
-	void generateMapData();
-
 };
