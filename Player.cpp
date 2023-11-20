@@ -10,6 +10,8 @@ Player::Player(const std::string& filename, float x, float y)
 	position.x = x;
 	position.y = y;
 	sprite.setPosition(position);
+	maxHealth = 100;
+	health = maxHealth;
 }
 
 void Player::input(const Environment& environment)
@@ -47,6 +49,13 @@ void Player::input(const Environment& environment)
 
 	for (const auto& waterBox : environment.waterCollisionBoxes) {
 		if (checkCollision(waterBox)) {
+			collision = true;
+			break;
+		}
+	}
+
+	for (const auto& lavaBox : environment.lavaCollisionBoxes) {
+		if (checkCollision(lavaBox)) {
 			collision = true;
 			break;
 		}
@@ -93,4 +102,32 @@ sf::Vector2f Player::getPosition() const
 sf::Vector2f Player::getLastSafePosition() const
 {
 	return lastSafePosition;
+}
+
+void Player::decreaseHealth(int amount)
+{
+	health -= amount;
+	if (health < 0) {
+		health = 0;
+	}
+}
+
+int Player::getHealth() const
+{
+	return health;
+}
+
+int Player::getMaxHealth() const
+{
+	return maxHealth;
+}
+
+bool Player::isDead() const
+{
+	return health == 0;
+}
+
+void Player::setHealth(int value)
+{
+	health = value;
 }

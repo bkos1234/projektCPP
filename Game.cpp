@@ -2,8 +2,10 @@
 #include "Player.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <thread>
+#include <chrono>
 
-Game::Game(sf::RenderWindow& window) : window(window), player("player.png", 100, 100), isRunning(true), environment(128)
+Game::Game(sf::RenderWindow& window) : window(window), player("player.png", 100, 100), isRunning(true), environment(128), ui(player), isPlayerDead(false)
 {
 	window.setFramerateLimit(60);
 }
@@ -31,6 +33,7 @@ void Game::processEvents()
 	}
 
 	player.input(environment);
+	ui.load();
 }
 
 void Game::update()
@@ -55,8 +58,7 @@ void Game::update()
 
 	for (const auto& lavaBox : environment.lavaCollisionBoxes) {
 		if (player.checkCollision(lavaBox)) {
-			player.setLastSafePosition({0,0});
-			player.revertToLastSafePosition();
+			player.decreaseHealth(1);
 		}
 	}
 	player.update();
@@ -67,5 +69,15 @@ void Game::render()
 	window.clear();
 	environment.draw(window);
 	player.draw(window);
+	ui.draw(window);
+	if (player.isDead())
+	{
+		ui.drawDeathScreen(window);
+	}
 	window.display();
+}
+
+void Game::handlePlayerDeath()
+{
+	ui.drawDeathScreen(window);
 }

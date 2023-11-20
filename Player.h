@@ -19,6 +19,13 @@ public:
 	sf::Vector2f getPosition() const;
 	sf::Vector2f getLastSafePosition() const;
 
+	void decreaseHealth(int amount); // zmniejsza poziom zdrowia
+	int getHealth() const; // zwraca poziom zdrowia
+	int getMaxHealth() const; // zwraca maksymalny poziom zdrowia
+	bool isDead() const; // sprawdza czy gracz jest martwy
+
+	void setHealth(int value);
+
 private:
 	sf::Texture texture;
 	sf::Sprite sprite;
@@ -26,4 +33,6 @@ private:
 	sf::Vector2f lastSafePosition;
 	float speed = 2;
 	sf::Vector2f pozycja0 = { 0,0 };
+	int health;
+	int maxHealth;
 };

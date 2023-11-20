@@ -15,6 +15,9 @@ int main()
         if (menu.isStartButtonPressed()) {
             game.run();
         }
+        else if (menu.isExitButtonPressed()) {
+            window.close();
+        }
         else {
             menu.draw();
         }

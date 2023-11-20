@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
 #include "Environment.h"
+#include "UI.h"
 
 class Game
 {
@@ -15,8 +16,11 @@ private:
 	Player player;
 	bool isRunning;
 	Environment environment;
+	UI ui;
+	bool isPlayerDead;
 
 	void processEvents();
 	void update();
 	void render();
+	void handlePlayerDeath();
 };
