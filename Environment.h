@@ -1,17 +1,19 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "EnemyManager.h"
 
 struct Tile {
 	int ground;
 	int object;
+	int enemy;
 };
 
 class Environment
 {
 public:
 
-	Environment(int tileSize);
+	Environment(int tileSize, EnemyManager& enemyManager, ProjectileManager& projectileManager);
 	void draw(sf::RenderWindow& window);
 	void load(Tile mapData[15][8]);
 	void addCollisionBox(int objectType, int i, int j, int tileSize, int treeWidth, int treeHeight);
@@ -33,6 +35,7 @@ private:
 	sf::Texture flowerTexture;
 	sf::Sprite groundSprites[15][8];
 	sf::Sprite objectSprites[15][8];
-	void generateMapData();
+	void generateEnemies(EnemyManager& enemyManager, ProjectileManager& projectileManager);
+	void generateMapData(EnemyManager& enemyManager, ProjectileManager& projectileManager);
 	Tile mapData[15][8];
 };

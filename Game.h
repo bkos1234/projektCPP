@@ -4,6 +4,8 @@
 #include "Player.h"
 #include "Environment.h"
 #include "UI.h"
+#include "EnemyManager.h"
+#include "ProjectileManager.h"
 
 class Game
 {
@@ -17,6 +19,8 @@ private:
 	bool isRunning;
 	Environment environment;
 	UI ui;
+	EnemyManager enemyManager;
+	ProjectileManager projectileManager;
 	bool isPlayerDead;
 
 	void processEvents();

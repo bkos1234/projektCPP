@@ -1,7 +1,7 @@
 #include "Environment.h"
 #include <ctime>
 
-Environment::Environment(int tileSize)
+Environment::Environment(int tileSize, EnemyManager& enemyManager, ProjectileManager& projectileManager)
 {
 	grassTexture.loadFromFile("grass.png");
 	treeTexture.loadFromFile("tree.png");
@@ -11,7 +11,8 @@ Environment::Environment(int tileSize)
 	flowerTexture.loadFromFile("flower.png");
 	lavaTexture.loadFromFile("lava.png");
 
-	generateMapData();
+	generateMapData(enemyManager, projectileManager);
+	generateEnemies(enemyManager, projectileManager);
 	for (int i = 0; i < 15; i++)
 	{
 		for (int j = 0; j < 8; j++)
@@ -92,7 +93,7 @@ void Environment::addCollisionBox(int objectType, int i, int j, int tileSize, in
 	}
 }
 
-void Environment::generateMapData()
+void Environment::generateMapData(EnemyManager& enemyManager, ProjectileManager& projectileManager)
 {
 	std::srand(std::time(0));
 
@@ -133,7 +134,34 @@ void Environment::generateMapData()
 		}
 	}
 
+	for (int i = 0; i < 15; ++i) {
+		for (int j = 0; j < 8; ++j) {
+			if (mapData[i][j].object == 0) {
+				int randomValue = rand() % 100;
+				int enemyType;
+				if (randomValue < 50) {
+					enemyType = 0; // nic
+				}
+				else {
+					enemyType = 1; // dinozaur
+				}
+				mapData[i][j].enemy = enemyType;
+			}
+		}
+	}
+
 	load(mapData);
+}
+
+void Environment::generateEnemies(EnemyManager& enemyManager, ProjectileManager& projectileManager)
+{
+	for (int i = 0; i < 15; ++i) {
+		for (int j = 0; j < 8; ++j) {
+			if (mapData[i][j].enemy == 1) {
+				std::cout << "Dodano przeciwnika";
+			}
+		}
+	}
 }
 
 int Environment::getObjectWidth(int objectType)

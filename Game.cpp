@@ -5,9 +5,15 @@
 #include <thread>
 #include <chrono>
 
-Game::Game(sf::RenderWindow& window) : window(window), player("player.png", 100, 100), isRunning(true), environment(128), ui(player), isPlayerDead(false)
+Game::Game(sf::RenderWindow& window) : window(window), player("player.png", 100, 100), isRunning(true), environment(128, enemyManager, projectileManager), ui(player), isPlayerDead(false)
 {
 	window.setFramerateLimit(60);
+	enemyManager.addEnemy(sf::Vector2f(2 * 128, 2 * 128), projectileManager);
+	enemyManager.addEnemy(sf::Vector2f(8 * 128, 4 * 128), projectileManager);
+	enemyManager.addEnemy(sf::Vector2f(12 * 128, 6 * 128), projectileManager);
+	enemyManager.addEnemy(sf::Vector2f(14 * 128, 6 * 128), projectileManager);
+	enemyManager.addEnemy(sf::Vector2f(4 * 128, 4 * 128), projectileManager);
+	enemyManager.addEnemy(sf::Vector2f(6 * 128, 2 * 128), projectileManager);
 }
 
 void Game::run()
@@ -34,6 +40,10 @@ void Game::processEvents()
 
 	player.input(environment);
 	ui.load();
+	if (projectileManager.checkPlayerCollision(player.getBounds()))
+	{
+		player.decreaseHealth(40);
+	}
 }
 
 void Game::update()
@@ -62,6 +72,8 @@ void Game::update()
 		}
 	}
 	player.update();
+	enemyManager.update(player.getPosition());
+	projectileManager.update();
 }
 
 void Game::render()
@@ -69,6 +81,8 @@ void Game::render()
 	window.clear();
 	environment.draw(window);
 	player.draw(window);
+	enemyManager.draw(window);
+	projectileManager.draw(window);
 	ui.draw(window);
 	if (player.isDead())
 	{
