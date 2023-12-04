@@ -9,7 +9,7 @@ public:
 	Player(const std::string& filename, float x, float y);
 
 	void move(float x, float y);
-	void input(const Environment& environment);
+	void input(const Environment& environment, sf::RenderWindow& window, ProjectileManager& projectileManager);
 	void update();
 	void draw(sf::RenderWindow& window);
 	bool checkCollision(const sf::FloatRect& obstacle) const;
@@ -26,6 +26,8 @@ public:
 
 	void setHealth(int value);
 
+	void shoot(ProjectileManager& projectileManager, sf::Vector2f targetPosition, float speed);
+
 private:
 	sf::Texture texture;
 	sf::Sprite sprite;
@@ -35,4 +37,6 @@ private:
 	sf::Vector2f pozycja0 = { 0,0 };
 	int health;
 	int maxHealth;
+	sf::Clock shootCooldown;
+	const float minShootCooldown = 0.5f;
 };

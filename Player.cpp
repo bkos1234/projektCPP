@@ -14,8 +14,9 @@ Player::Player(const std::string& filename, float x, float y)
 	health = maxHealth;
 }
 
-void Player::input(const Environment& environment)
+void Player::input(const Environment& environment, sf::RenderWindow& window, ProjectileManager& projectileManager)
 {
+	// poruszanie siê gracza
 	sf::Vector2f previousPosition = position;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
@@ -33,6 +34,15 @@ void Player::input(const Environment& environment)
 	{
 		position.x += speed;
 	}
+
+	// strzelanie przez gracza
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && shootCooldown.getElapsedTime().asSeconds() >= minShootCooldown)
+	{
+		sf::Vector2f mousePosition = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+		shoot(projectileManager, mousePosition, 5.0);
+		shootCooldown.restart();
+	}
+
 	bool collision = false;
 	for (const auto& treeBox : environment.treeCollisionBoxes) {
 		if (checkCollision(treeBox)) {
@@ -130,4 +140,10 @@ bool Player::isDead() const
 void Player::setHealth(int value)
 {
 	health = value;
+}
+
+void Player::shoot(ProjectileManager& projectileManager, sf::Vector2f targetPosition, float speed)
+{
+	projectileManager.addProjectile(position, targetPosition, speed, "fireball.png", true);
+	std::cout << "Gracz strzeli³";
 }

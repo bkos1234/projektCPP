@@ -8,7 +8,7 @@
 class Enemy
 {
 public:
-	Enemy(sf::Vector2f startPosition, ProjectileManager& projectileManager);
+	Enemy(sf::Vector2f startPosition, ProjectileManager& projectileManager, int maxHealth);
 
 	void update(sf::Vector2f playerPosition);
 	void draw(sf::RenderWindow& window) const;
@@ -19,6 +19,8 @@ public:
 
 	void facePlayer(sf::Vector2f playerPosition);
 
+	void decreaseHealth(int value);
+
 private:
 	sf::Texture texture;
 	sf::Texture texture2;
@@ -27,4 +29,5 @@ private:
 	bool canShootFlag;
 	ProjectileManager& projectileManager;
 	sf::Vector2f mouthOffset;
+	int health;
 };

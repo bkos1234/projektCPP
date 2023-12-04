@@ -2,7 +2,8 @@
 #pragma once
 
 // obiekt sie tworzy w klasie game
-Projectile::Projectile(sf::Vector2f startPosition, sf::Vector2f targetPosition, float speed, const std::string& texturePath)
+Projectile::Projectile(sf::Vector2f startPosition, sf::Vector2f targetPosition, float speed, const std::string& texturePath, bool isPlayerProjectile)
+    : isPlayerProjectile(isPlayerProjectile)
 {
     if (!texture.loadFromFile(texturePath)) {
         std::cout << "B³¹d podczas ³adowania tekstury pocisku\n";

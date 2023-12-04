@@ -1,9 +1,9 @@
 #include "EnemyManager.h"
 #include "ProjectileManager.h"
 
-void EnemyManager::addEnemy(sf::Vector2f startPosition, ProjectileManager& projectileManager)
+void EnemyManager::addEnemy(sf::Vector2f startPosition, ProjectileManager& projectileManager, int maxHealth)
 {
-	enemies.emplace_back(startPosition, projectileManager);
+	enemies.emplace_back(startPosition, projectileManager, maxHealth);
 }
 
 void EnemyManager::update(sf::Vector2f playerPosition)

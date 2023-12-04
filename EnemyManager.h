@@ -7,7 +7,7 @@
 class EnemyManager
 {
 public:
-	void addEnemy(sf::Vector2f startPosition, ProjectileManager& projectileManager);
+	void addEnemy(sf::Vector2f startPosition, ProjectileManager& projectileManager, int maxHealth);
 	void update(sf::Vector2f playerPosition);
 	void draw(sf::RenderWindow& window);
 

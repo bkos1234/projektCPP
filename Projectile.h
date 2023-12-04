@@ -6,12 +6,13 @@
 class Projectile
 {
 public:
-	Projectile(sf::Vector2f startPosition, sf::Vector2f targetPosition, float speed, const std::string& texturePath);
+	Projectile(sf::Vector2f startPosition, sf::Vector2f targetPosition, float speed, const std::string& texturePath, bool isPlayerProjectile);
 
 	void update();
 	void draw(sf::RenderWindow& window);
 	bool checkCollision(const sf::FloatRect& obstacle) const;
 	sf::FloatRect getBounds() const;
+	bool isPlayerProjectile;
 
 private:
 	sf::Texture texture;

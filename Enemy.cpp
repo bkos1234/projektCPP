@@ -1,6 +1,6 @@
 #include "Enemy.h"
 
-Enemy::Enemy(sf::Vector2f startPosition, ProjectileManager& projectileManager) : projectileManager(projectileManager)
+Enemy::Enemy(sf::Vector2f startPosition, ProjectileManager& projectileManager, int maxHealth) : projectileManager(projectileManager), health(maxHealth)
 {
 	if (!texture.loadFromFile("dinosaur.png")) {
 		std::cout << "B³¹d podczas ³adowania tekstury przeciwnika\n";
@@ -55,7 +55,7 @@ void Enemy::shoot(sf::Vector2f playerPosition)
 {
 	sf::Vector2f textureSize(sprite.getTexture()->getSize());
 	sf::Vector2f mouthPosition = sprite.getPosition() + mouthOffset;
-	projectileManager.addProjectile(sprite.getPosition() + mouthOffset, playerPosition, 2.5, "fireball.png");
+	projectileManager.addProjectile(sprite.getPosition() + mouthOffset, playerPosition, 2.5, "fireball.png", false);
 
 	std::cout << "Przeciwnik strzela!\n";
 }
@@ -77,4 +77,13 @@ void Enemy::facePlayer(sf::Vector2f playerPosition)
 	}
 
 	sprite.setRotation(angle);
+}
+
+void Enemy::decreaseHealth(int value)
+{
+	health -= value;
+	if (health < 0)
+	{
+		health = 0;
+	}
 }
