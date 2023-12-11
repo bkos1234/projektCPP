@@ -1,5 +1,5 @@
 #include "UI.h"
-#include <iostream>
+#include "Player.h"
 
 UI::UI(Player& player) : player(player)
 {

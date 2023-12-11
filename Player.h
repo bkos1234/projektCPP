@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <SFML/System/Vector2.hpp>
-#include "Environment.h"
+class Environment; // Forward declaration
+class ProjectileManager; // Forward declaration
 
 class Player
 {

@@ -1,9 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <iostream>
-#include <string>
-#include "Projectile.h"
-#include "ProjectileManager.h"
+class ProjectileManager; // Forward declaration
 
 class Enemy
 {
@@ -21,9 +18,14 @@ public:
 
 	void decreaseHealth(int value);
 
+	sf::FloatRect getBounds() const;
+
+	bool isDead() const;
+
 private:
 	sf::Texture texture;
 	sf::Texture texture2;
+	sf::Texture texture3;
 	sf::Sprite sprite;
 	sf::Clock shootTimer;
 	bool canShootFlag;

@@ -1,5 +1,7 @@
 #include "EnemyManager.h"
+#include "Enemy.h"
 #include "ProjectileManager.h"
+#include <algorithm>
 
 void EnemyManager::addEnemy(sf::Vector2f startPosition, ProjectileManager& projectileManager, int maxHealth)
 {
@@ -11,6 +13,7 @@ void EnemyManager::update(sf::Vector2f playerPosition)
 	for (auto& enemy : enemies)
 	{
 		enemy.update(playerPosition);
+
 	}
 }
 
@@ -20,4 +23,8 @@ void EnemyManager::draw(sf::RenderWindow& window)
 	{
 		enemy.draw(window);
 	}
+}
+
+std::vector<Enemy>& EnemyManager::getEnemies() {
+	return enemies;
 }

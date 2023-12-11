@@ -1,7 +1,7 @@
 #pragma once
-
 #include <SFML/Graphics.hpp>
-#include "EnemyManager.h"
+class EnemyManager; // Forward declaration
+class ProjectileManager; // Forward declaration
 
 struct Tile {
 	int ground;

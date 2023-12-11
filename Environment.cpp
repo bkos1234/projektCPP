@@ -1,4 +1,6 @@
 #include "Environment.h"
+#include "EnemyManager.h"
+#include "ProjectileManager.h"
 #include <ctime>
 
 Environment::Environment(int tileSize, EnemyManager& enemyManager, ProjectileManager& projectileManager)

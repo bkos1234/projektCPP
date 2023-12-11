@@ -35,6 +35,30 @@ void Menu::load()
 	exitButton.setTexture(exitButtonTexture);
 	exitButton.setPosition(window.getSize().x / 2 - exitButton.getGlobalBounds().width / 2, settingsButton.getPosition().y + settingsButton.getGlobalBounds().height + buttonSpacing);
 
+	// przycisk wznów
+	if (!resumeButtonTexture.loadFromFile("resumeButton.png")) {
+		std::cout << "B³¹d podczas ³adowania przycisku wznawiania";
+	}
+
+	resumeButton.setTexture(resumeButtonTexture);
+	resumeButton.setPosition(window.getSize().x / 2 - resumeButton.getGlobalBounds().width / 2, window.getSize().y / 2 - resumeButton.getGlobalBounds().height / 2 - 100);
+
+	// przycisk wyjdŸ do menu g³ównego
+	if (!exitToMainButtonTexture.loadFromFile("exitToMainButton.png")) {
+		std::cout << "B³¹d podczas ³adowania przycisku powrotu do menu g³ównego";
+	}
+
+	exitToMainButton.setTexture(exitToMainButtonTexture);
+	exitToMainButton.setPosition(window.getSize().x / 2 - exitToMainButton.getGlobalBounds().width / 2, resumeButton.getPosition().y + resumeButton.getGlobalBounds().height + buttonSpacing);
+
+	// napis pauza
+	if (!pauseTextTexture.loadFromFile("pauseText.png")) {
+		std::cout << "B³¹d podczas ³adowania napisu pauzy";
+	}
+
+	pauseText.setTexture(pauseTextTexture);
+	pauseText.setPosition(window.getSize().x / 2 - exitToMainButton.getGlobalBounds().width / 2, resumeButton.getPosition().y + resumeButton.getGlobalBounds().height + buttonSpacing - 300);
+
 	// t³o
 	if (!backgroundTexture.loadFromFile("background.png")) {
 		std::cout << "B³¹d podczas ³adowania t³a";
@@ -45,47 +69,78 @@ void Menu::load()
 }
 
 void Menu::draw() {
-	window.clear();
 	window.draw(background);
 	window.draw(startButton);
 	window.draw(settingsButton);
 	window.draw(exitButton);
-	window.display();
-	handleInput();
+}
+
+void Menu::drawPauseMenu()
+{
+	window.draw(pauseText);
+	window.draw(resumeButton);
+	window.draw(exitToMainButton);
 }
 
 bool Menu::isStartButtonPressed() {
 	return startButtonPressed;
 }
 
-void Menu::handleInput() {
+void Menu::handleInput(sf::Event& event) {
 	exitButtonPressed = false;
-    sf::Event event;
-    while (window.pollEvent(event)) {
-		if (event.type == sf::Event::Closed)
-		{
-			window.close();
-			break;
+	if (event.type == sf::Event::MouseButtonPressed) {
+		if (event.mouseButton.button == sf::Mouse::Left) {
+			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+			if (startButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
+				startButtonPressed = true;
+			else if (exitButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
+				exitButtonPressed = true;
 		}
-		else if (event.type == sf::Event::MouseButtonPressed)
-		{
-			if (event.mouseButton.button == sf::Mouse::Left)
-			{
-				sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-				if (startButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
-					startButtonPressed = true;
-				else if (exitButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) // SprawdŸ, czy naciœniêto przycisk "Zamknij Grê"
-					exitButtonPressed = true;
-			}
+	}
+}
+
+void Menu::handlePauseInput(sf::Event& event) {
+	resumeButtonPressed = false;
+	exitToMainButtonPressed = false;
+	if (event.type == sf::Event::MouseButtonPressed) {
+		if (event.mouseButton.button == sf::Mouse::Left) {
+			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+			if (resumeButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
+				resumeButtonPressed = true;
+			else if (exitToMainButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
+				exitToMainButtonPressed = true;
 		}
-    }
+	}
 }
 
 bool Menu::isExitButtonPressed() {
 	return exitButtonPressed;
 }
 
+bool Menu::isResumeButtonPressed() {
+	if (resumeButtonPressed == true)
+	std::cout << "Wcisnieto wznow";
+	return resumeButtonPressed;
+}
+
+bool Menu::isExitToMainButtonPressed()
+{
+	if (exitToMainButtonPressed == true)
+	std::cout << "Wcisnieto wroc do menu glownego";
+	return exitToMainButtonPressed;
+}
+
 void Menu::setStartButtonPressed(bool value)
 {
 	startButtonPressed = value;
+}
+
+void Menu::setResumeButtonPressed(bool value)
+{
+	resumeButtonPressed = value;
+}
+
+void Menu::setExitToMainButtonPressed(bool value)
+{
+	exitToMainButtonPressed = value;
 }

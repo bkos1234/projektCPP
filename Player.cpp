@@ -1,7 +1,6 @@
 #include "Player.h"
-#include <string>
-#include <iostream>
 #include "Environment.h"
+#include "ProjectileManager.h"
 
 Player::Player(const std::string& filename, float x, float y)
 {

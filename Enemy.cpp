@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "ProjectileManager.h"
 
 Enemy::Enemy(sf::Vector2f startPosition, ProjectileManager& projectileManager, int maxHealth) : projectileManager(projectileManager), health(maxHealth)
 {
@@ -7,6 +8,10 @@ Enemy::Enemy(sf::Vector2f startPosition, ProjectileManager& projectileManager, i
 	}
 
 	if (!texture2.loadFromFile("dinosaur_angry.png")) {
+		std::cout << "B³¹d podczas ³adowania tekstury przeciwnika\n";
+	}
+
+	if (!texture3.loadFromFile("dinosaur_dead.png")) {
 		std::cout << "B³¹d podczas ³adowania tekstury przeciwnika\n";
 	}
 	texture.setSmooth(true);
@@ -19,7 +24,7 @@ Enemy::Enemy(sf::Vector2f startPosition, ProjectileManager& projectileManager, i
 
 void Enemy::update(sf::Vector2f playerPosition)
 {	
-	if (std::abs(playerPosition.x - sprite.getPosition().x) < 400.0f)
+	if (std::abs(playerPosition.x - sprite.getPosition().x) < 400.0f && !(isDead()))
 	{
 		facePlayer(playerPosition);
 		sprite.setTexture(texture2);
@@ -34,6 +39,11 @@ void Enemy::update(sf::Vector2f playerPosition)
 		shoot(playerPosition);
 		resetShootTimer();
 	}
+
+	if (isDead())
+	{
+		sprite.setTexture(texture3);
+	}
 }
 
 void Enemy::draw(sf::RenderWindow& window) const
@@ -43,7 +53,7 @@ void Enemy::draw(sf::RenderWindow& window) const
 
 bool Enemy::canShoot() const
 {
-	return canShootFlag && shootTimer.getElapsedTime().asSeconds() >= 5.0;
+	return canShootFlag && shootTimer.getElapsedTime().asSeconds() >= 5.0 && !(isDead());
 }
 
 void Enemy::resetShootTimer()
@@ -86,4 +96,13 @@ void Enemy::decreaseHealth(int value)
 	{
 		health = 0;
 	}
+}
+
+sf::FloatRect Enemy::getBounds() const {
+	return sprite.getGlobalBounds();
+}
+
+bool Enemy::isDead() const
+{
+	return health == 0;
 }

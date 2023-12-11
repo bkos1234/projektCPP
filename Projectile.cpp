@@ -1,5 +1,4 @@
 #include "Projectile.h"
-#pragma once
 
 // obiekt sie tworzy w klasie game
 Projectile::Projectile(sf::Vector2f startPosition, sf::Vector2f targetPosition, float speed, const std::string& texturePath, bool isPlayerProjectile)
