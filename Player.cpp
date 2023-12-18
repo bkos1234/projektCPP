@@ -146,3 +146,9 @@ void Player::shoot(ProjectileManager& projectileManager, sf::Vector2f targetPosi
 	projectileManager.addProjectile(position, targetPosition, speed, "fireball.png", true);
 	std::cout << "Gracz strzeli³";
 }
+
+void Player::reset()
+{
+	health = maxHealth;
+	sprite.setPosition(100, 100);
+}

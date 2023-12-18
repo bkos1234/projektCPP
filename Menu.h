@@ -7,14 +7,20 @@ public:
     Menu(sf::RenderWindow& window);
     void draw();
     void drawPauseMenu();
+    void drawLevelSelectionMenu();
     bool isStartButtonPressed();
     bool isExitButtonPressed();
     bool isResumeButtonPressed();
     bool isExitToMainButtonPressed();
+    bool isLevel1ButtonPressed();
+    bool isGenerateLevelButtonPressed();
     void setStartButtonPressed(bool value);
     void setResumeButtonPressed(bool value);
     void setExitToMainButtonPressed(bool value);
+    void setLevel1ButtonPressed(bool value);
+    void setGenerateLevelButtonPressed(bool value);
     void handleInput(sf::Event& event);
+    void handleLevelSelectionInput(sf::Event& event);
     void handlePauseInput(sf::Event& event);
 
 private:
@@ -29,10 +35,15 @@ private:
 
     sf::Texture pauseTextTexture;
 
+    sf::Texture level1ButtonTexture;
+    sf::Texture generateLevelButtonTexture;
+
     sf::Sprite startButton;
     sf::Sprite settingsButton;
     sf::Sprite exitButton;
     sf::Sprite background;
+    sf::Sprite level1Button;
+    sf::Sprite generateLevelButton;
 
     sf::Sprite pauseText;
 
@@ -45,6 +56,9 @@ private:
 
     bool resumeButtonPressed;
     bool exitToMainButtonPressed;
+
+    bool level1ButtonPressed;
+    bool generateLevelButtonPressed;
 
     void load();
 };

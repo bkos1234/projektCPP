@@ -28,6 +28,8 @@ public:
 
 	void shoot(ProjectileManager& projectileManager, sf::Vector2f targetPosition, float speed);
 
+	void reset();
+
 private:
 	sf::Texture texture;
 	sf::Sprite sprite;

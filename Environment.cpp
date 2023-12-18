@@ -2,6 +2,8 @@
 #include "EnemyManager.h"
 #include "ProjectileManager.h"
 #include <ctime>
+#include <fstream>
+#include <sstream>
 
 Environment::Environment(int tileSize, EnemyManager& enemyManager, ProjectileManager& projectileManager)
 {
@@ -13,7 +15,6 @@ Environment::Environment(int tileSize, EnemyManager& enemyManager, ProjectileMan
 	flowerTexture.loadFromFile("flower.png");
 	lavaTexture.loadFromFile("lava.png");
 
-	generateMapData(enemyManager, projectileManager);
 	generateEnemies(enemyManager, projectileManager);
 	for (int i = 0; i < 15; i++)
 	{
@@ -97,6 +98,7 @@ void Environment::addCollisionBox(int objectType, int i, int j, int tileSize, in
 
 void Environment::generateMapData(EnemyManager& enemyManager, ProjectileManager& projectileManager)
 {
+	reset();
 	std::srand(std::time(0));
 
 	for (int i = 0; i < 15; ++i) {
@@ -202,4 +204,52 @@ int Environment::getObjectHeight(int objectType)
 	default:
 		return 0;
 	}
+}
+
+void Environment::loadMapFromFile(const std::string& filename) {
+	reset();
+	for (int i = 0; i < 15; ++i) {
+		for (int j = 0; j < 8; ++j) {
+			int groundType;
+			groundType = 0;
+			mapData[i][j].ground = groundType;
+		}
+	}
+	std::ifstream file(filename);
+
+	if (!file.is_open())
+	{
+		std::cerr << "Nie mo¿na otworzyæ pliku " << filename << std::endl;
+		return;
+	}
+
+	for (int j = 0; j < 8; ++j)
+	{
+		for (int i = 0; i < 15; ++i)
+		{
+			char objectType;
+			file >> objectType;
+			std::cout << "Na pozycje " << i << ", " << j << " " << "dodano " << objectType << std::endl;
+			mapData[i][j].object = objectType - '0';
+		}
+	}
+	file.close();
+
+	load(mapData);
+}
+
+void Environment::reset()
+{
+	for (int i = 0; i < 15; ++i)
+	{
+		for (int j = 0; j < 8; ++j)
+		{
+			mapData[i][j].object = 0;
+		}
+	}
+
+	treeCollisionBoxes.clear();
+	stoneCollisionBoxes.clear();
+	waterCollisionBoxes.clear();
+	lavaCollisionBoxes.clear();
 }

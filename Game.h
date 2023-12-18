@@ -31,4 +31,5 @@ private:
 	void update();
 	void render();
 	void handlePlayerDeath();
+	void reset();
 };

@@ -3,12 +3,6 @@
 Game::Game(sf::RenderWindow& window) : window(window), menu(window), player("player.png", 100, 100), isRunning(true), environment(128, enemyManager, projectileManager), ui(player), isPlayerDead(false), currentState(GameState::MainMenu)
 {
 	window.setFramerateLimit(60);
-	enemyManager.addEnemy(sf::Vector2f(2 * 128, 2 * 128), projectileManager,100);
-	enemyManager.addEnemy(sf::Vector2f(8 * 128, 4 * 128), projectileManager,100);
-	enemyManager.addEnemy(sf::Vector2f(12 * 128, 6 * 128), projectileManager,100);
-	enemyManager.addEnemy(sf::Vector2f(14 * 128, 6 * 128), projectileManager,100);
-	enemyManager.addEnemy(sf::Vector2f(4 * 128, 4 * 128), projectileManager,100);
-	enemyManager.addEnemy(sf::Vector2f(6 * 128, 2 * 128), projectileManager,100);
 }
 
 void Game::run()
@@ -48,6 +42,18 @@ void Game::processEvents()
 		{
 			menu.handleInput(event);
 		}
+		else if (currentState == GameState::LevelSelection)
+		{
+			menu.handleLevelSelectionInput(event);
+			if (menu.isLevel1ButtonPressed())
+			{
+				environment.loadMapFromFile("level1.txt");
+			}
+			else if (menu.isGenerateLevelButtonPressed())
+			{
+				environment.generateMapData(enemyManager,projectileManager);
+			}
+		}
 		else if (currentState == GameState::Paused)
 		{
 			menu.handlePauseInput(event);
@@ -59,11 +65,21 @@ void Game::processEvents()
 	case GameState::MainMenu:
 		if (menu.isStartButtonPressed()) {
 			std::cout << "Kliknieto start";
-			changeState(GameState::Playing);
+			changeState(GameState::LevelSelection);
 			menu.setStartButtonPressed(false);
 		}
 		else if (menu.isExitButtonPressed()) {
 			isRunning = false;
+		}
+		break;
+	case GameState::LevelSelection:
+		if (menu.isLevel1ButtonPressed()) {
+			changeState(GameState::Playing);
+			menu.setLevel1ButtonPressed(false);
+		}
+		else if (menu.isGenerateLevelButtonPressed()) {
+			changeState(GameState::Playing);
+			menu.setGenerateLevelButtonPressed(false);
 		}
 		break;
 	case GameState::Playing:
@@ -80,6 +96,7 @@ void Game::processEvents()
 		}
 		else if (menu.isExitToMainButtonPressed()) {
 			changeState(GameState::MainMenu);
+			reset();
 		}
 	}
 }
@@ -131,8 +148,10 @@ void Game::render()
 		menu.draw();
 		std::cout << "Menu";
 		break;
+	case GameState::LevelSelection:
+		menu.drawLevelSelectionMenu();
+		break;
 	case GameState::Playing:
-		std::cout << "Granie";
 			environment.draw(window);
 			player.draw(window);
 			enemyManager.draw(window);
@@ -162,4 +181,10 @@ void Game::handlePlayerDeath()
 void Game::changeState(GameState newState)
 {
 	currentState = newState;
+}
+
+void Game::reset()
+{
+	environment.reset();
+	player.reset();
 }

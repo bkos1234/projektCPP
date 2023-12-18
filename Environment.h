@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-class EnemyManager; // Forward declaration
-class ProjectileManager; // Forward declaration
+class EnemyManager;
+class ProjectileManager;
 
 struct Tile {
 	int ground;
@@ -23,7 +23,9 @@ public:
 	std::vector<sf::FloatRect> lavaCollisionBoxes;
 	int getObjectWidth(int objectType); // funkcja zwracaj¹ca szerokoœæ obiektu
 	int getObjectHeight(int objectType); // funkcja zwracaj¹ca wysokoœæ obiektu
-
+	void loadMapFromFile(const std::string& filename);
+	void generateMapData(EnemyManager& enemyManager, ProjectileManager& projectileManager);
+	void reset();
 private:
 
 	sf::Texture grassTexture;
@@ -36,6 +38,5 @@ private:
 	sf::Sprite groundSprites[15][8];
 	sf::Sprite objectSprites[15][8];
 	void generateEnemies(EnemyManager& enemyManager, ProjectileManager& projectileManager);
-	void generateMapData(EnemyManager& enemyManager, ProjectileManager& projectileManager);
 	Tile mapData[15][8];
 };
