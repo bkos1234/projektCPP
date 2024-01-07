@@ -2,10 +2,16 @@
 #include <SFML/Graphics.hpp>
 class ProjectileManager; // Forward declaration
 
+enum class EnemyType
+{
+	Dinosaur,
+	Soldier
+};
+
 class Enemy
 {
 public:
-	Enemy(sf::Vector2f startPosition, ProjectileManager& projectileManager, int maxHealth);
+	Enemy(sf::Vector2f startPosition, ProjectileManager& projectileManager, int maxHealth, EnemyType type);
 
 	void update(sf::Vector2f playerPosition);
 	void draw(sf::RenderWindow& window) const;
@@ -28,8 +34,13 @@ private:
 	sf::Texture texture3;
 	sf::Sprite sprite;
 	sf::Clock shootTimer;
+	float shootCooldown;
 	bool canShootFlag;
 	ProjectileManager& projectileManager;
 	sf::Vector2f mouthOffset;
 	int health;
+	std::string projectileTexture;
+	float projectileSpeed;
+	int projectileDamage;
+	EnemyType type;
 };

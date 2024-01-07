@@ -5,7 +5,7 @@
 #include <fstream>
 #include <sstream>
 
-Environment::Environment(int tileSize, EnemyManager& enemyManager, ProjectileManager& projectileManager)
+Environment::Environment(int tileSize)
 {
 	grassTexture.loadFromFile("grass.png");
 	treeTexture.loadFromFile("tree.png");
@@ -14,8 +14,8 @@ Environment::Environment(int tileSize, EnemyManager& enemyManager, ProjectileMan
 	rockTexture.loadFromFile("rock.png");
 	flowerTexture.loadFromFile("flower.png");
 	lavaTexture.loadFromFile("lava.png");
+	carTexture.loadFromFile("car.png");
 
-	generateEnemies(enemyManager, projectileManager);
 	for (int i = 0; i < 15; i++)
 	{
 		for (int j = 0; j < 8; j++)
@@ -68,6 +68,10 @@ void Environment::load(Tile mapData[15][8])
 			{
 				objectSprites[i][j].setTexture(lavaTexture);
 			}
+			else if (mapData[i][j].object == 6)
+			{
+				objectSprites[i][j].setTexture(carTexture);
+			}
 		}
 	}
 }
@@ -93,10 +97,13 @@ void Environment::addCollisionBox(int objectType, int i, int j, int tileSize, in
 	case 5: // lawa
 		lavaCollisionBoxes.push_back(collisionBox);
 		break;
+	case 6: // samochód
+		carCollisionBoxes.push_back(collisionBox);
+		break;
 	}
 }
 
-void Environment::generateMapData(EnemyManager& enemyManager, ProjectileManager& projectileManager)
+void Environment::generateMapData()
 {
 	reset();
 	std::srand(std::time(0));
@@ -157,17 +164,6 @@ void Environment::generateMapData(EnemyManager& enemyManager, ProjectileManager&
 	load(mapData);
 }
 
-void Environment::generateEnemies(EnemyManager& enemyManager, ProjectileManager& projectileManager)
-{
-	for (int i = 0; i < 15; ++i) {
-		for (int j = 0; j < 8; ++j) {
-			if (mapData[i][j].enemy == 1) {
-				std::cout << "Dodano przeciwnika";
-			}
-		}
-	}
-}
-
 int Environment::getObjectWidth(int objectType)
 {
 	switch (objectType)
@@ -182,6 +178,8 @@ int Environment::getObjectWidth(int objectType)
 		return 100;
 	case 5: // lawa
 		return 80;
+	case 6: // samochód
+		return 100;
 	default:
 		return 0;
 	}
@@ -201,6 +199,8 @@ int Environment::getObjectHeight(int objectType)
 		return 100;
 	case 5: // lawa
 		return 80;
+	case 6: // samochód
+		return 100;
 	default:
 		return 0;
 	}

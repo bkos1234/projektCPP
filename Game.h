@@ -32,4 +32,5 @@ private:
 	void render();
 	void handlePlayerDeath();
 	void reset();
+	void loadMapFromFile(const std::string& filename);
 };

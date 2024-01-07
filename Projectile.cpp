@@ -1,8 +1,8 @@
 #include "Projectile.h"
 
 // obiekt sie tworzy w klasie game
-Projectile::Projectile(sf::Vector2f startPosition, sf::Vector2f targetPosition, float speed, const std::string& texturePath, bool isPlayerProjectile)
-    : isPlayerProjectile(isPlayerProjectile)
+Projectile::Projectile(sf::Vector2f startPosition, sf::Vector2f targetPosition, float speed, const std::string& texturePath, bool isPlayerProjectile, int damage)
+    : isPlayerProjectile(isPlayerProjectile), damage(damage)
 {
     if (!texture.loadFromFile(texturePath)) {
         std::cout << "B³¹d podczas ³adowania tekstury pocisku\n";
@@ -45,4 +45,8 @@ bool Projectile::checkCollision(const sf::FloatRect& obstacle) const
 sf::FloatRect Projectile::getBounds() const
 {
     return sprite.getGlobalBounds();
+}
+
+int Projectile::getDamage() const {
+    return damage;
 }

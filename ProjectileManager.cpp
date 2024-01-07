@@ -1,8 +1,8 @@
 #include "ProjectileManager.h"
 
-void ProjectileManager::addProjectile(sf::Vector2f startPosition, sf::Vector2f targetPosition, float speed, const std::string& texturePath, bool isPlayerProjectile)
+void ProjectileManager::addProjectile(sf::Vector2f startPosition, sf::Vector2f targetPosition, float speed, const std::string& texturePath, bool isPlayerProjectile, int damage)
 {
-	projectiles.emplace_back(startPosition, targetPosition, speed, texturePath, isPlayerProjectile);
+	projectiles.emplace_back(startPosition, targetPosition, speed, texturePath, isPlayerProjectile, damage);
 }
 
 void ProjectileManager::update()

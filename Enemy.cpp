@@ -1,18 +1,28 @@
 #include "Enemy.h"
 #include "ProjectileManager.h"
 
-Enemy::Enemy(sf::Vector2f startPosition, ProjectileManager& projectileManager, int maxHealth) : projectileManager(projectileManager), health(maxHealth)
+Enemy::Enemy(sf::Vector2f startPosition, ProjectileManager& projectileManager, int maxHealth, EnemyType type) : projectileManager(projectileManager), health(maxHealth), type(type)
 {
-	if (!texture.loadFromFile("dinosaur.png")) {
-		std::cout << "B³¹d podczas ³adowania tekstury przeciwnika\n";
-	}
-
-	if (!texture2.loadFromFile("dinosaur_angry.png")) {
-		std::cout << "B³¹d podczas ³adowania tekstury przeciwnika\n";
-	}
-
-	if (!texture3.loadFromFile("dinosaur_dead.png")) {
-		std::cout << "B³¹d podczas ³adowania tekstury przeciwnika\n";
+	switch (type)
+	{
+	case EnemyType::Dinosaur: // dinozaur
+		texture.loadFromFile("dinosaur.png");
+		texture2.loadFromFile("dinosaur_angry.png");
+		texture3.loadFromFile("dinosaur_dead.png");
+		projectileTexture = "fireball.png"; // tekstura pocisku
+		projectileSpeed = 5.0; // prêdkoœæ pocisku
+		projectileDamage = 10; // obra¿enia pocisku
+		shootCooldown = 2.0; // odstêp czasowy miêdzy pociskami
+		break;
+	case EnemyType::Soldier: // nietoperz
+		texture.loadFromFile("soldier.png");
+		texture2.loadFromFile("soldier.png");
+		texture3.loadFromFile("soldier_dead.png");
+		projectileTexture = "bullet.png"; // tekstura pocisku
+		projectileSpeed = 10.0; // prêdkoœæ pocisku
+		projectileDamage = 5; // obra¿enia pocisku
+		shootCooldown = 1.0; // odstêp czasowy miêdzy pociskami
+		break;
 	}
 	texture.setSmooth(true);
 	sprite.setTexture(texture);
@@ -33,7 +43,7 @@ void Enemy::update(sf::Vector2f playerPosition)
 	{
 		sprite.setTexture(texture);
 	}
-	// strzelanie co 5 sekund
+	// strzelanie co shootColdown sekund
 	if (canShoot() && std::abs(playerPosition.x - sprite.getPosition().x) < 400.0f) {
 		facePlayer(playerPosition);
 		shoot(playerPosition);
@@ -53,7 +63,7 @@ void Enemy::draw(sf::RenderWindow& window) const
 
 bool Enemy::canShoot() const
 {
-	return canShootFlag && shootTimer.getElapsedTime().asSeconds() >= 5.0 && !(isDead());
+	return canShootFlag && shootTimer.getElapsedTime().asSeconds() >= shootCooldown && !(isDead());
 }
 
 void Enemy::resetShootTimer()
@@ -65,7 +75,7 @@ void Enemy::shoot(sf::Vector2f playerPosition)
 {
 	sf::Vector2f textureSize(sprite.getTexture()->getSize());
 	sf::Vector2f mouthPosition = sprite.getPosition() + mouthOffset;
-	projectileManager.addProjectile(sprite.getPosition() + mouthOffset, playerPosition, 2.5, "fireball.png", false);
+	projectileManager.addProjectile(sprite.getPosition() + mouthOffset, playerPosition, projectileSpeed, projectileTexture, false, projectileDamage);
 
 	std::cout << "Przeciwnik strzela!\n";
 }

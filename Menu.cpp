@@ -1,7 +1,7 @@
 #include "Menu.h"
 #include <iostream>
 
-Menu::Menu(sf::RenderWindow& window) : window(window), startButtonPressed(false), exitButtonPressed(false)
+Menu::Menu(sf::RenderWindow& window) : window(window), startButtonPressed(false), level1ButtonPressed(false), level2ButtonPressed(false), exitButtonPressed(false)
 {
 	load();
 }
@@ -74,12 +74,21 @@ void Menu::load()
 	level1Button.setTexture(level1ButtonTexture);
 	level1Button.setPosition(window.getSize().x / 2 - level1Button.getGlobalBounds().width / 2, window.getSize().y / 2 - level1Button.getGlobalBounds().height / 2 - 100);
 
+	// przycisk poziom 2
+	if (!level2ButtonTexture.loadFromFile("level2.png")) {
+		std::cout << "B³¹d podczas ³adowania przycisku poziomu 2";
+	}
+
+	level2Button.setTexture(level2ButtonTexture);
+	level2Button.setPosition(window.getSize().x / 2 - level2Button.getGlobalBounds().width / 2, level1Button.getPosition().y + level1Button.getGlobalBounds().height + buttonSpacing);
+
+	// przycisk wygeneruj poziom
 	if (!generateLevelButtonTexture.loadFromFile("generateLevel.png")) {
 		std::cout << "B³¹d";
 	}
 
 	generateLevelButton.setTexture(generateLevelButtonTexture);
-	generateLevelButton.setPosition(window.getSize().x / 2 - generateLevelButton.getGlobalBounds().width / 2, level1Button.getPosition().y + level1Button.getGlobalBounds().height + buttonSpacing);
+	generateLevelButton.setPosition(window.getSize().x / 2 - generateLevelButton.getGlobalBounds().width / 2, level2Button.getPosition().y + level2Button.getGlobalBounds().height + buttonSpacing);
 }
 
 void Menu::draw() {
@@ -100,6 +109,7 @@ void Menu::drawLevelSelectionMenu()
 {
 	window.draw(background);
 	window.draw(level1Button);
+	window.draw(level2Button);
 	window.draw(generateLevelButton);
 }
 
@@ -123,12 +133,15 @@ void Menu::handleInput(sf::Event& event) {
 
 void Menu::handleLevelSelectionInput(sf::Event& event) {
 	level1ButtonPressed = false;
+	level2ButtonPressed = false;
 	generateLevelButtonPressed = false;
 	if (event.type == sf::Event::MouseButtonPressed) {
 		if (event.mouseButton.button == sf::Mouse::Left) {
 			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 			if (level1Button.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
 				level1ButtonPressed = true;
+			else if (level2Button.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
+				level2ButtonPressed = true;
 			else if (generateLevelButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
 				generateLevelButtonPressed = true;
 		}
@@ -171,6 +184,11 @@ bool Menu::isLevel1ButtonPressed()
 	return level1ButtonPressed;
 }
 
+bool Menu::isLevel2ButtonPressed()
+{
+	return level2ButtonPressed;
+}
+
 bool Menu::isGenerateLevelButtonPressed()
 {
 	return generateLevelButtonPressed;
@@ -194,6 +212,11 @@ void Menu::setExitToMainButtonPressed(bool value)
 void Menu::setLevel1ButtonPressed(bool value)
 {
 	level1ButtonPressed = value;
+}
+
+void Menu::setLevel2ButtonPressed(bool value)
+{
+	level2ButtonPressed = value;
 }
 
 void Menu::setGenerateLevelButtonPressed(bool value)

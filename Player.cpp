@@ -143,7 +143,7 @@ void Player::setHealth(int value)
 
 void Player::shoot(ProjectileManager& projectileManager, sf::Vector2f targetPosition, float speed)
 {
-	projectileManager.addProjectile(position, targetPosition, speed, "fireball.png", true);
+	projectileManager.addProjectile(position, targetPosition, speed, "fireball.png", true, 20);
 	std::cout << "Gracz strzeli³";
 }
 

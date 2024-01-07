@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game(sf::RenderWindow& window) : window(window), menu(window), player("player.png", 100, 100), isRunning(true), environment(128, enemyManager, projectileManager), ui(player), isPlayerDead(false), currentState(GameState::MainMenu)
+Game::Game(sf::RenderWindow& window) : window(window), menu(window), player("player.png", 100, 100), isRunning(true), environment(128), ui(player), isPlayerDead(false), currentState(GameState::MainMenu)
 {
 	window.setFramerateLimit(60);
 }
@@ -47,11 +47,15 @@ void Game::processEvents()
 			menu.handleLevelSelectionInput(event);
 			if (menu.isLevel1ButtonPressed())
 			{
-				environment.loadMapFromFile("level1.txt");
+				loadMapFromFile("level1.txt");
+			}
+			else if (menu.isLevel2ButtonPressed())
+			{
+				loadMapFromFile("level2.txt");
 			}
 			else if (menu.isGenerateLevelButtonPressed())
 			{
-				environment.generateMapData(enemyManager,projectileManager);
+				environment.generateMapData();
 			}
 		}
 		else if (currentState == GameState::Paused)
@@ -76,6 +80,10 @@ void Game::processEvents()
 		if (menu.isLevel1ButtonPressed()) {
 			changeState(GameState::Playing);
 			menu.setLevel1ButtonPressed(false);
+		}
+		else if (menu.isLevel2ButtonPressed()) {
+			changeState(GameState::Playing);
+			menu.setLevel2ButtonPressed(false);
 		}
 		else if (menu.isGenerateLevelButtonPressed()) {
 			changeState(GameState::Playing);
@@ -187,4 +195,9 @@ void Game::reset()
 {
 	environment.reset();
 	player.reset();
+}
+
+void Game::loadMapFromFile(const std::string& filename) {
+	environment.loadMapFromFile(filename); // wczytaj mapê z pliku
+	enemyManager.loadEnemiesFromFile(filename, projectileManager); // wczytaj przeciwników z tego samego pliku
 }

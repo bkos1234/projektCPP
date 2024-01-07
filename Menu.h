@@ -13,11 +13,13 @@ public:
     bool isResumeButtonPressed();
     bool isExitToMainButtonPressed();
     bool isLevel1ButtonPressed();
+    bool isLevel2ButtonPressed();
     bool isGenerateLevelButtonPressed();
     void setStartButtonPressed(bool value);
     void setResumeButtonPressed(bool value);
     void setExitToMainButtonPressed(bool value);
     void setLevel1ButtonPressed(bool value);
+    void setLevel2ButtonPressed(bool value);
     void setGenerateLevelButtonPressed(bool value);
     void handleInput(sf::Event& event);
     void handleLevelSelectionInput(sf::Event& event);
@@ -36,6 +38,7 @@ private:
     sf::Texture pauseTextTexture;
 
     sf::Texture level1ButtonTexture;
+    sf::Texture level2ButtonTexture;
     sf::Texture generateLevelButtonTexture;
 
     sf::Sprite startButton;
@@ -43,6 +46,7 @@ private:
     sf::Sprite exitButton;
     sf::Sprite background;
     sf::Sprite level1Button;
+    sf::Sprite level2Button;
     sf::Sprite generateLevelButton;
 
     sf::Sprite pauseText;
@@ -58,6 +62,7 @@ private:
     bool exitToMainButtonPressed;
 
     bool level1ButtonPressed;
+    bool level2ButtonPressed;
     bool generateLevelButtonPressed;
 
     void load();
