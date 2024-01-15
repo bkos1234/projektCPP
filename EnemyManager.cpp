@@ -75,3 +75,8 @@ void EnemyManager::loadEnemiesFromFile(const std::string& filename, ProjectileMa
 	}
 	file.close();
 }
+
+void EnemyManager::reset()
+{
+	enemies.clear();
+}

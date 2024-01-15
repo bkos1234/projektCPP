@@ -13,6 +13,7 @@ class Game
 public:
 	Game(sf::RenderWindow& window);
 	void run();
+	int getDeadEnemiesCount() const;
 
 private:
 	sf::RenderWindow& window;
@@ -33,4 +34,5 @@ private:
 	void handlePlayerDeath();
 	void reset();
 	void loadMapFromFile(const std::string& filename);
+	int deadEnemiesCount;
 };

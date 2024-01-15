@@ -62,6 +62,10 @@ void Game::processEvents()
 		{
 			menu.handlePauseInput(event);
 		}
+		else if (currentState == GameState::Completed)
+		{
+			menu.handleCompletedInput(event);
+		}
 	}
 
 	switch (currentState)
@@ -103,7 +107,17 @@ void Game::processEvents()
 			changeState(GameState::Playing);
 		}
 		else if (menu.isExitToMainButtonPressed()) {
+			reset();
 			changeState(GameState::MainMenu);
+		}
+	case GameState::Completed:
+		if (menu.isNextLevelButtonPressed()) {
+			reset();
+			changeState(GameState::LevelSelection);
+		}
+		else if (menu.isExitToMainButtonPressed()) {
+			reset();
+			changeState(GameState::LevelSelection);
 			reset();
 		}
 	}
@@ -143,7 +157,35 @@ void Game::update()
 		projectileManager.checkCollisions(environment); // sprawdza kolizje pociskow z obiektami i usuwa pociski ktore maja kolizje
 		std::vector<Enemy>& enemies = enemyManager.getEnemies();
 		projectileManager.checkEnemyCollisions(enemies);
+
+		deadEnemiesCount = 0; // zerujemy licznik pokonanych przeciwników
+		for (const auto& enemy : enemyManager.getEnemies()) {
+			if (enemy.isDead()) {
+				deadEnemiesCount++; // zwiêkszamy licznik pokonanych przeciwników
+			}
+		}
+
+
+
+		// sprawdŸ, czy wszystkie obiekty klasy Enemy s¹ martwe
+		bool allEnemiesDead = true;
+		for (const auto& enemy : enemyManager.getEnemies()) {
+			if (!enemy.isDead()) {
+				allEnemiesDead = false;
+				std::cout << "Falsz";
+				break;
+			}
+			std::cout << "Sprawdzam";
+		}
+
+		// jeœli tak, to wyœwietl komunikat o zwyciêstwie lub przejdŸ do nastêpnego poziomu
+		if (allEnemiesDead) {
+			std::cout << "Gratulacje, ukoñczy³eœ poziom!\n";
+			changeState(GameState::Completed);
+		}
 		break;
+
+
 	}
 }
 
@@ -177,6 +219,12 @@ void Game::render()
 		projectileManager.draw(window);
 		menu.drawPauseMenu();
 		break;
+	case GameState::Completed:
+		environment.draw(window);
+		player.draw(window);
+		enemyManager.draw(window);
+		projectileManager.draw(window);
+		menu.drawCompletedScreen();
 	}
 	window.display();
 }
@@ -194,10 +242,16 @@ void Game::changeState(GameState newState)
 void Game::reset()
 {
 	environment.reset();
+	enemyManager.reset();
 	player.reset();
 }
 
 void Game::loadMapFromFile(const std::string& filename) {
 	environment.loadMapFromFile(filename); // wczytaj mapê z pliku
 	enemyManager.loadEnemiesFromFile(filename, projectileManager); // wczytaj przeciwników z tego samego pliku
+}
+
+int Game::getDeadEnemiesCount() const
+{
+	return deadEnemiesCount; // zwracamy liczbê pokonanych przeciwników
 }

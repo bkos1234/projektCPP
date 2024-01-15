@@ -1,7 +1,7 @@
 #include "Menu.h"
 #include <iostream>
 
-Menu::Menu(sf::RenderWindow& window) : window(window), startButtonPressed(false), level1ButtonPressed(false), level2ButtonPressed(false), exitButtonPressed(false)
+Menu::Menu(sf::RenderWindow& window) : window(window), startButtonPressed(false), level1ButtonPressed(false), level2ButtonPressed(false), exitButtonPressed(false), nextLevelButtonPressed(false)
 {
 	load();
 }
@@ -18,6 +18,13 @@ void Menu::load()
 
 	startButton.setTexture(startButtonTexture);
 	startButton.setPosition(window.getSize().x / 2 - startButton.getGlobalBounds().width / 2, window.getSize().y / 2 - startButton.getGlobalBounds().height / 2 - 100);
+
+	if (!nextLevelButtonTexture.loadFromFile("nextLevelButton.png")) {
+		std::cout << "B³¹d podczas ³adowania przycisku nastêpnego poziomu";
+	}
+
+	nextLevelButton.setTexture(nextLevelButtonTexture);
+	nextLevelButton.setPosition(window.getSize().x / 2 - nextLevelButton.getGlobalBounds().width / 2, window.getSize().y / 2 - nextLevelButton.getGlobalBounds().height / 2 - 100);
 
 	// przycisk ustawienia
 	if (!settingsButtonTexture.loadFromFile("settingsButton.png")) {
@@ -162,6 +169,32 @@ void Menu::handlePauseInput(sf::Event& event) {
 	}
 }
 
+void Menu::drawCompletedScreen()
+{
+	window.draw(nextLevelButton);
+	window.draw(exitToMainButton);
+}
+
+void Menu::handleCompletedInput(sf::Event& event)
+{
+	nextLevelButtonPressed = false;
+    exitToMainButtonPressed = false;
+    if (event.type == sf::Event::MouseButtonPressed) {
+        if (event.mouseButton.button == sf::Mouse::Left) {
+            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+            if (nextLevelButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
+                nextLevelButtonPressed = true;
+            else if (exitToMainButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
+                exitToMainButtonPressed = true;
+        }
+    }
+}
+
+bool Menu::isNextLevelButtonPressed()
+{
+	return false;
+}
+
 bool Menu::isExitButtonPressed() {
 	return exitButtonPressed;
 }
@@ -177,6 +210,11 @@ bool Menu::isExitToMainButtonPressed()
 	if (exitToMainButtonPressed == true)
 	std::cout << "Wcisnieto wroc do menu glownego";
 	return exitToMainButtonPressed;
+}
+
+void Menu::setNextLevelButtonPressed(bool value)
+{
+	nextLevelButtonPressed = value;
 }
 
 bool Menu::isLevel1ButtonPressed()

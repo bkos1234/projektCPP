@@ -25,6 +25,11 @@ public:
     void handleLevelSelectionInput(sf::Event& event);
     void handlePauseInput(sf::Event& event);
 
+    void drawCompletedScreen();
+    void handleCompletedInput(sf::Event& event);
+    bool isNextLevelButtonPressed();
+    void setNextLevelButtonPressed(bool value);
+
 private:
     sf::RenderWindow& window;
     sf::Texture startButtonTexture;
@@ -65,5 +70,10 @@ private:
     bool level2ButtonPressed;
     bool generateLevelButtonPressed;
 
+    sf::Texture completedScreenTexture;
+    sf::Sprite completedScreen;
+    sf::Texture nextLevelButtonTexture;
+    sf::Sprite nextLevelButton;
+    bool nextLevelButtonPressed;
     void load();
 };

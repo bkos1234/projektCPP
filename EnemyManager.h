@@ -14,6 +14,7 @@ public:
 	std::vector<Enemy>& getEnemies();
 	void displayEnemies();
 	void loadEnemiesFromFile(const std::string& filename, ProjectileManager& projectileManager);
+	void reset();
 
 private:
 	std::vector<Enemy> enemies;

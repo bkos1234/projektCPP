@@ -105,7 +105,6 @@ void Environment::addCollisionBox(int objectType, int i, int j, int tileSize, in
 
 void Environment::generateMapData()
 {
-	reset();
 	std::srand(std::time(0));
 
 	for (int i = 0; i < 15; ++i) {
@@ -207,7 +206,6 @@ int Environment::getObjectHeight(int objectType)
 }
 
 void Environment::loadMapFromFile(const std::string& filename) {
-	reset();
 	for (int i = 0; i < 15; ++i) {
 		for (int j = 0; j < 8; ++j) {
 			int groundType;
@@ -240,16 +238,18 @@ void Environment::loadMapFromFile(const std::string& filename) {
 
 void Environment::reset()
 {
+	treeCollisionBoxes.clear();
+	stoneCollisionBoxes.clear();
+	waterCollisionBoxes.clear();
+	lavaCollisionBoxes.clear();
+	carCollisionBoxes.clear();
 	for (int i = 0; i < 15; ++i)
 	{
 		for (int j = 0; j < 8; ++j)
 		{
 			mapData[i][j].object = 0;
+			objectSprites[i][j].setTexture(sf::Texture());
 		}
 	}
-
-	treeCollisionBoxes.clear();
-	stoneCollisionBoxes.clear();
-	waterCollisionBoxes.clear();
-	lavaCollisionBoxes.clear();
+	load(mapData);
 }
