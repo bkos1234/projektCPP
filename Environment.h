@@ -27,6 +27,7 @@ public:
 	void loadMapFromFile(const std::string& filename);
 	void generateMapData();
 	void reset();
+	void clearSprites();
 private:
 
 	sf::Texture grassTexture;
@@ -37,6 +38,7 @@ private:
 	sf::Texture lavaTexture;
 	sf::Texture flowerTexture;
 	sf::Texture carTexture;
+	sf::Texture emptyTexture;
 	sf::Sprite groundSprites[15][8];
 	sf::Sprite objectSprites[15][8];
 	Tile mapData[15][8];

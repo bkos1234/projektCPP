@@ -151,4 +151,7 @@ void Player::reset()
 {
 	health = maxHealth;
 	sprite.setPosition(100, 100);
+	position = sprite.getPosition();
+	lastSafePosition = position;
+	std::cout << "Pozycja gracza hahahahaha" << position.x << "xd xd" << position.y << std::endl;
 }

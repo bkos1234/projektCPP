@@ -9,8 +9,8 @@ public:
 	void draw(sf::RenderWindow& window);
 	void load();
 	void updateHealthBar();
+	void updateEnemiesCount(int deadEnemiesCount, int totalEnemiesCount);
 	void drawDeathScreen(sf::RenderWindow& window);
-
 private:
 	Player& player;
 	sf::Font font;
@@ -18,4 +18,5 @@ private:
 	sf::RectangleShape healthBar;
 	sf::Texture deathScreenTexture;
 	sf::Sprite deathScreen;
+	sf::Text enemiesCountText;
 };

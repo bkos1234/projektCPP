@@ -14,6 +14,7 @@ public:
 	Game(sf::RenderWindow& window);
 	void run();
 	int getDeadEnemiesCount() const;
+	int getTotalEnemiesCount() const;
 
 private:
 	sf::RenderWindow& window;
@@ -34,5 +35,7 @@ private:
 	void handlePlayerDeath();
 	void reset();
 	void loadMapFromFile(const std::string& filename);
+	int currentLevel;
 	int deadEnemiesCount;
+	int totalEnemiesCount;
 };

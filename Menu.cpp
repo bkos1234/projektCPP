@@ -1,7 +1,7 @@
 #include "Menu.h"
 #include <iostream>
 
-Menu::Menu(sf::RenderWindow& window) : window(window), startButtonPressed(false), level1ButtonPressed(false), level2ButtonPressed(false), exitButtonPressed(false), nextLevelButtonPressed(false)
+Menu::Menu(sf::RenderWindow& window) : window(window), startButtonPressed(false), level1ButtonPressed(false), level2ButtonPressed(false), exitButtonPressed(false), nextLevelButtonPressed(false), level1Completed(false), level2Completed(false)
 {
 	load();
 }
@@ -96,6 +96,20 @@ void Menu::load()
 
 	generateLevelButton.setTexture(generateLevelButtonTexture);
 	generateLevelButton.setPosition(window.getSize().x / 2 - generateLevelButton.getGlobalBounds().width / 2, level2Button.getPosition().y + level2Button.getGlobalBounds().height + buttonSpacing);
+	font.loadFromFile("roboto.ttf");
+	levelFinishedText.setFont(font);
+	levelFinishedText.setString("POZIOM UKOÑCZONY");
+	levelFinishedText.setCharacterSize(50);
+	levelFinishedText.setFillColor(sf::Color::White);
+	levelFinishedText.setOutlineColor(sf::Color::Black);
+	levelFinishedText.setOutlineThickness(5);
+	sf::FloatRect textRect = levelFinishedText.getGlobalBounds();
+	levelFinishedText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	levelFinishedText.setPosition(1920 / 2.0f, 1080 / 2.0f - 250);
+
+	deathScreenTexture.loadFromFile("deathScreen.png");
+	deathScreen.setTexture(deathScreenTexture);
+	deathScreen.setPosition(0, 0);
 }
 
 void Menu::draw() {
@@ -171,6 +185,7 @@ void Menu::handlePauseInput(sf::Event& event) {
 
 void Menu::drawCompletedScreen()
 {
+	window.draw(levelFinishedText);
 	window.draw(nextLevelButton);
 	window.draw(exitToMainButton);
 }
@@ -188,11 +203,19 @@ void Menu::handleCompletedInput(sf::Event& event)
                 exitToMainButtonPressed = true;
         }
     }
+    if (level1Completed) { // if level 1 is completed, change the button color to green
+        level1Button.setColor(sf::Color::Green);
+    }
+
+    if (level2Completed) { // if level 2 is completed, change the button color to green
+        level2Button.setColor(sf::Color::Green);
+    }
 }
+
 
 bool Menu::isNextLevelButtonPressed()
 {
-	return false;
+	return nextLevelButtonPressed;
 }
 
 bool Menu::isExitButtonPressed() {
@@ -260,4 +283,33 @@ void Menu::setLevel2ButtonPressed(bool value)
 void Menu::setGenerateLevelButtonPressed(bool value)
 {
 	generateLevelButtonPressed = value;
+}
+
+void Menu::update()
+{
+	if (level1Completed) { // jeœli poziom 1 zosta³ ukoñczony, zmieñ kolor przycisku na zielony
+		level1Button.setColor(sf::Color::Green);
+	}
+
+	if (level2Completed) { // jeœli poziom 2 zosta³ ukoñczony, zmieñ kolor przycisku na zielony
+		level2Button.setColor(sf::Color::Green);
+	}
+}
+
+void Menu::drawDeathScreen(sf::RenderWindow& window)
+{
+	window.draw(deathScreen);
+	window.draw(exitToMainButton);
+}
+
+void Menu::handleDeathInput(sf::Event& event)
+{
+	exitToMainButtonPressed = false;
+	if (event.type == sf::Event::MouseButtonPressed) {
+		if (event.mouseButton.button == sf::Mouse::Left) {
+			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+			if (exitToMainButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
+				exitToMainButtonPressed = true;
+		}
+	}
 }

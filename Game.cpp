@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game(sf::RenderWindow& window) : window(window), menu(window), player("player.png", 100, 100), isRunning(true), environment(128), ui(player), isPlayerDead(false), currentState(GameState::MainMenu)
+Game::Game(sf::RenderWindow& window) : window(window), menu(window), player("player.png", 100, 100), isRunning(true), environment(128), ui(player), isPlayerDead(false), currentState(GameState::MainMenu), currentLevel(1), deadEnemiesCount(0), totalEnemiesCount(0)
 {
 	window.setFramerateLimit(60);
 }
@@ -10,10 +10,7 @@ void Game::run()
 	while (isRunning)
 	{
 		processEvents();
-		if (currentState == GameState::Playing)
-		{
-			update();
-		}
+		update();
 		render();
 	}
 }
@@ -66,6 +63,10 @@ void Game::processEvents()
 		{
 			menu.handleCompletedInput(event);
 		}
+		else if (currentState == GameState::Death)
+		{
+			menu.handleDeathInput(event);
+		}
 	}
 
 	switch (currentState)
@@ -82,10 +83,12 @@ void Game::processEvents()
 		break;
 	case GameState::LevelSelection:
 		if (menu.isLevel1ButtonPressed()) {
+			currentLevel = 1;
 			changeState(GameState::Playing);
 			menu.setLevel1ButtonPressed(false);
 		}
 		else if (menu.isLevel2ButtonPressed()) {
+			currentLevel = 2;
 			changeState(GameState::Playing);
 			menu.setLevel2ButtonPressed(false);
 		}
@@ -110,10 +113,18 @@ void Game::processEvents()
 			reset();
 			changeState(GameState::MainMenu);
 		}
+	case GameState::Death:
+		if (menu.isExitToMainButtonPressed()) {
+			reset();
+			changeState(GameState::MainMenu);
+		}
 	case GameState::Completed:
 		if (menu.isNextLevelButtonPressed()) {
+			currentLevel++;
 			reset();
-			changeState(GameState::LevelSelection);
+			changeState(GameState::Playing);
+			loadMapFromFile("level" + std::to_string(currentLevel) + ".txt");
+			menu.setNextLevelButtonPressed(false);
 		}
 		else if (menu.isExitToMainButtonPressed()) {
 			reset();
@@ -125,9 +136,12 @@ void Game::processEvents()
 
 void Game::update()
 {
+	bool allEnemiesDead = true;
+	std::vector<Enemy>& enemies = enemyManager.getEnemies();
 	switch (currentState)
 	{
 	case GameState::Playing:
+		ui.updateEnemiesCount(deadEnemiesCount,totalEnemiesCount);
 			for (const auto& treeBox : environment.treeCollisionBoxes) {
 				if (player.checkCollision(treeBox)) {
 					player.revertToLastSafePosition();
@@ -155,7 +169,6 @@ void Game::update()
 		enemyManager.update(player.getPosition());
 		projectileManager.update();
 		projectileManager.checkCollisions(environment); // sprawdza kolizje pociskow z obiektami i usuwa pociski ktore maja kolizje
-		std::vector<Enemy>& enemies = enemyManager.getEnemies();
 		projectileManager.checkEnemyCollisions(enemies);
 
 		deadEnemiesCount = 0; // zerujemy licznik pokonanych przeciwników
@@ -167,8 +180,7 @@ void Game::update()
 
 
 
-		// sprawdŸ, czy wszystkie obiekty klasy Enemy s¹ martwe
-		bool allEnemiesDead = true;
+		// sprawdza czy wszystkie obiekty klasy Enemy s¹ martwe
 		for (const auto& enemy : enemyManager.getEnemies()) {
 			if (!enemy.isDead()) {
 				allEnemiesDead = false;
@@ -178,15 +190,25 @@ void Game::update()
 			std::cout << "Sprawdzam";
 		}
 
-		// jeœli tak, to wyœwietl komunikat o zwyciêstwie lub przejdŸ do nastêpnego poziomu
 		if (allEnemiesDead) {
 			std::cout << "Gratulacje, ukoñczy³eœ poziom!\n";
 			changeState(GameState::Completed);
 		}
 		break;
 
-
+	case GameState::Completed:
+		if (currentLevel == 1)
+		{
+			menu.level1Completed = true;
+		}
+		else if (currentLevel == 2)
+		{
+			menu.level2Completed = true;
+			std::cout << "Zmieni³em jeban¹ zmienn¹ na true";
+		}
+		break;
 	}
+	menu.update();
 }
 
 void Game::render()
@@ -209,9 +231,12 @@ void Game::render()
 			ui.draw(window);
 			if (player.isDead())
 			{
-				ui.drawDeathScreen(window);
+				handlePlayerDeath();
 			}
 			break;
+	case GameState::Death:
+		menu.drawDeathScreen(window);
+		break;
 	case GameState::Paused:
 		environment.draw(window);
 		player.draw(window);
@@ -231,7 +256,7 @@ void Game::render()
 
 void Game::handlePlayerDeath()
 {
-	ui.drawDeathScreen(window);
+	changeState(GameState::Death);
 }
 
 void Game::changeState(GameState newState)
@@ -244,14 +269,24 @@ void Game::reset()
 	environment.reset();
 	enemyManager.reset();
 	player.reset();
+	deadEnemiesCount = 0;
+	totalEnemiesCount = 0;
 }
 
 void Game::loadMapFromFile(const std::string& filename) {
+	//environment.clearSprites();
 	environment.loadMapFromFile(filename); // wczytaj mapê z pliku
 	enemyManager.loadEnemiesFromFile(filename, projectileManager); // wczytaj przeciwników z tego samego pliku
+	totalEnemiesCount = enemyManager.getTotalEnemiesCount();
 }
 
 int Game::getDeadEnemiesCount() const
 {
-	return deadEnemiesCount; // zwracamy liczbê pokonanych przeciwników
+	return deadEnemiesCount;
 }
+
+int Game::getTotalEnemiesCount() const
+{
+	return totalEnemiesCount;
+}
+

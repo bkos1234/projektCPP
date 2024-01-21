@@ -15,6 +15,7 @@ Environment::Environment(int tileSize)
 	flowerTexture.loadFromFile("flower.png");
 	lavaTexture.loadFromFile("lava.png");
 	carTexture.loadFromFile("car.png");
+	emptyTexture.loadFromFile("empty.png");
 
 	for (int i = 0; i < 15; i++)
 	{
@@ -47,8 +48,11 @@ void Environment::load(Tile mapData[15][8])
 			addCollisionBox(mapData[i][j].object, i, j, 128, getObjectWidth(mapData[i][j].object), getObjectHeight(mapData[i][j].object));
 			groundSprites[i][j].setTexture(grassTexture); // ustawia wszêdzie trawê, jako pod³ogê
 
-
-			if (mapData[i][j].object == 1)
+			if (mapData[i][j].object == 0)
+			{
+				objectSprites[i][j].setTexture(emptyTexture);
+			}
+			else if (mapData[i][j].object == 1)
 			{
 				objectSprites[i][j].setTexture(treeTexture);
 			}
@@ -252,4 +256,16 @@ void Environment::reset()
 		}
 	}
 	load(mapData);
+}
+
+void Environment::clearSprites()
+{
+	for (int i = 0; i < 15; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			// set the sprites to empty textures
+			objectSprites[i][j].setTexture(sf::Texture());
+		}
+	}
 }

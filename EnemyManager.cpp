@@ -80,3 +80,8 @@ void EnemyManager::reset()
 {
 	enemies.clear();
 }
+
+int EnemyManager::getTotalEnemiesCount()
+{
+	return enemies.size();
+}

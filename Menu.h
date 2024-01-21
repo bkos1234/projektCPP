@@ -30,6 +30,17 @@ public:
     bool isNextLevelButtonPressed();
     void setNextLevelButtonPressed(bool value);
 
+    void drawDeathScreen(sf::RenderWindow& window);
+    void handleDeathInput(sf::Event& event);
+
+    void update();
+
+    int level1Completed;
+    int level2Completed;
+    int level3Completed;
+    int level4Completed;
+    int level5Completed;
+
 private:
     sf::RenderWindow& window;
     sf::Texture startButtonTexture;
@@ -59,6 +70,9 @@ private:
     sf::Sprite resumeButton;
     sf::Sprite exitToMainButton;
 
+    sf::Font font;
+    sf::Text levelFinishedText;
+
     bool startButtonPressed;
     bool exitButtonPressed;
     bool settingsButtonPressed;
@@ -74,6 +88,10 @@ private:
     sf::Sprite completedScreen;
     sf::Texture nextLevelButtonTexture;
     sf::Sprite nextLevelButton;
+
+    sf::Texture deathScreenTexture;
+    sf::Sprite deathScreen;
+
     bool nextLevelButtonPressed;
     void load();
 };
