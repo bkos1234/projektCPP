@@ -49,6 +49,12 @@ void Player::input(const Environment& environment, sf::RenderWindow& window, Pro
 			break;
 		}
 	}
+	for (const auto& tree2Box : environment.tree2CollisionBoxes) {
+		if (checkCollision(tree2Box)) {
+			collision = true;
+			break;
+		}
+	}
 	for (const auto& rockBox : environment.stoneCollisionBoxes) {
 		if (checkCollision(rockBox)) {
 			collision = true;
@@ -144,7 +150,6 @@ void Player::setHealth(int value)
 void Player::shoot(ProjectileManager& projectileManager, sf::Vector2f targetPosition, float speed)
 {
 	projectileManager.addProjectile(position, targetPosition, speed, "fireball.png", true, 20);
-	std::cout << "Gracz strzeli³";
 }
 
 void Player::reset()
@@ -153,5 +158,4 @@ void Player::reset()
 	sprite.setPosition(100, 100);
 	position = sprite.getPosition();
 	lastSafePosition = position;
-	std::cout << "Pozycja gracza hahahahaha" << position.x << "xd xd" << position.y << std::endl;
 }

@@ -14,7 +14,7 @@ Enemy::Enemy(sf::Vector2f startPosition, ProjectileManager& projectileManager, i
 		projectileDamage = 10; // obra¿enia pocisku
 		shootCooldown = 2.0; // odstêp czasowy miêdzy pociskami
 		break;
-	case EnemyType::Soldier: // nietoperz
+	case EnemyType::Soldier: // ¿o³nierz
 		texture.loadFromFile("soldier.png");
 		texture2.loadFromFile("soldier.png");
 		texture3.loadFromFile("soldier_dead.png");
@@ -23,7 +23,35 @@ Enemy::Enemy(sf::Vector2f startPosition, ProjectileManager& projectileManager, i
 		projectileDamage = 5; // obra¿enia pocisku
 		shootCooldown = 1.0; // odstêp czasowy miêdzy pociskami
 		break;
+	case EnemyType::Steve: // steve
+		texture.loadFromFile("steve.png");
+		texture2.loadFromFile("steve.png");
+		texture3.loadFromFile("steve_dead.png");
+		projectileTexture = "bullet.png"; // tekstura pocisku
+		projectileSpeed = 5.0; // prêdkoœæ pocisku
+		projectileDamage = 5; // obra¿enia pocisku
+		shootCooldown = 1.0; // odstêp czasowy miêdzy pociskami
+		break;
+	case EnemyType::Dog: // pies
+		texture.loadFromFile("dog.png");
+		texture2.loadFromFile("dog_angry.png");
+		texture3.loadFromFile("dog_dead.png");
+		projectileTexture = "laser.png"; // tekstura pocisku
+		projectileSpeed = 5.0; // prêdkoœæ pocisku
+		projectileDamage = 5; // obra¿enia pocisku
+		shootCooldown = 1.0; // odstêp czasowy miêdzy pociskami
+		break;
+	case EnemyType::Dog2: // pies2
+		texture.loadFromFile("dog2.png");
+		texture2.loadFromFile("dog2_angry.png");
+		texture3.loadFromFile("dog2_dead.png");
+		projectileTexture = "laser.png"; // tekstura pocisku
+		projectileSpeed = 5.0; // prêdkoœæ pocisku
+		projectileDamage = 5; // obra¿enia pocisku
+		shootCooldown = 1.0; // odstêp czasowy miêdzy pociskami
+		break;
 	}
+
 	texture.setSmooth(true);
 	sprite.setTexture(texture);
 	sprite.setPosition(startPosition);
@@ -76,8 +104,6 @@ void Enemy::shoot(sf::Vector2f playerPosition)
 	sf::Vector2f textureSize(sprite.getTexture()->getSize());
 	sf::Vector2f mouthPosition = sprite.getPosition() + mouthOffset;
 	projectileManager.addProjectile(sprite.getPosition() + mouthOffset, playerPosition, projectileSpeed, projectileTexture, false, projectileDamage);
-
-	std::cout << "Przeciwnik strzela!\n";
 }
 
 void Enemy::facePlayer(sf::Vector2f playerPosition)

@@ -9,6 +9,7 @@ Environment::Environment(int tileSize)
 {
 	grassTexture.loadFromFile("grass.png");
 	treeTexture.loadFromFile("tree.png");
+	tree2Texture.loadFromFile("tree2.png");
 	sandTexture.loadFromFile("sand.png");
 	waterTexture.loadFromFile("water.png");
 	rockTexture.loadFromFile("rock.png");
@@ -76,6 +77,10 @@ void Environment::load(Tile mapData[15][8])
 			{
 				objectSprites[i][j].setTexture(carTexture);
 			}
+			else if (mapData[i][j].object == 7)
+			{
+				objectSprites[i][j].setTexture(tree2Texture);
+			}
 		}
 	}
 }
@@ -103,6 +108,9 @@ void Environment::addCollisionBox(int objectType, int i, int j, int tileSize, in
 		break;
 	case 6: // samochód
 		carCollisionBoxes.push_back(collisionBox);
+		break;
+	case 7: // drzewo2
+		tree2CollisionBoxes.push_back(collisionBox);
 		break;
 	}
 }
@@ -183,6 +191,8 @@ int Environment::getObjectWidth(int objectType)
 		return 80;
 	case 6: // samochód
 		return 100;
+	case 7: // drzewo2
+		return 85;
 	default:
 		return 0;
 	}
@@ -204,6 +214,8 @@ int Environment::getObjectHeight(int objectType)
 		return 80;
 	case 6: // samochód
 		return 100;
+	case 7: // drzewo2
+		return 85;
 	default:
 		return 0;
 	}
@@ -231,7 +243,6 @@ void Environment::loadMapFromFile(const std::string& filename) {
 		{
 			char objectType;
 			file >> objectType;
-			std::cout << "Na pozycje " << i << ", " << j << " " << "dodano " << objectType << std::endl;
 			mapData[i][j].object = objectType - '0';
 		}
 	}

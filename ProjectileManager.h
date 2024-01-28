@@ -3,6 +3,7 @@
 #include "Projectile.h"
 #include "Environment.h" // musi byc zeby dzialalo checkCollisions
 #include "Enemy.h"
+#include <list>
 
 class ProjectileManager
 {
@@ -17,5 +18,5 @@ public:
     bool checkEnemyCollisions(std::vector<Enemy>& enemies);
 
 private:
-    std::vector<Projectile> projectiles;
+    std::list<Projectile> projectiles;
 };

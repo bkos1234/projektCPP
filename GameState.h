@@ -3,6 +3,7 @@
 enum class GameState
 {
 	MainMenu,
+	HowToPlay,
 	LevelSelection,
 	Playing,
 	Death,

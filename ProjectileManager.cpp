@@ -63,6 +63,22 @@ void ProjectileManager::checkCollisions(Environment& environment) {
             }
         }
 
+        // sprawdzanie kolizji z obiektami samochodów
+        for (const auto& carBox : environment.carCollisionBoxes) {
+            if (it->checkCollision(carBox)) {
+                collisionDetected = true;
+                break;
+            }
+        }
+
+        // sprawdzanie kolizji z obiektami drzew
+        for (const auto& tree2Box : environment.tree2CollisionBoxes) {
+            if (it->checkCollision(tree2Box)) {
+                collisionDetected = true;
+                break;
+            }
+        }
+
         // usuwanie pocisku, jeœli wykryto kolizjê z obiektem
         if (collisionDetected) {
             it = projectiles.erase(it);
@@ -79,7 +95,7 @@ bool ProjectileManager::checkEnemyCollisions(std::vector<Enemy>& enemies) {
         bool collisionDetected = false;
 
         for (auto enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt) {
-            if (it->isPlayerProjectile && it->checkCollision(enemyIt->getBounds())) {
+            if (it->isPlayerProjectile && it->checkCollision(enemyIt->getBounds()) && !(enemyIt->isDead())) {
                 // Pocisk trafi³ przeciwnika
                 enemyIt->decreaseHealth(25); // Zmniejsz zdrowie przeciwnika
                 collisionDetected = true;

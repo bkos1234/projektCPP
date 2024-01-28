@@ -14,6 +14,9 @@ public:
     bool isExitToMainButtonPressed();
     bool isLevel1ButtonPressed();
     bool isLevel2ButtonPressed();
+    bool isLevel3ButtonPressed();
+    bool isLevel4ButtonPressed();
+    bool isLevel5ButtonPressed();
     bool isGenerateLevelButtonPressed();
     void setStartButtonPressed(bool value);
     void setResumeButtonPressed(bool value);
@@ -24,15 +27,17 @@ public:
     void handleInput(sf::Event& event);
     void handleLevelSelectionInput(sf::Event& event);
     void handlePauseInput(sf::Event& event);
-
+    void handleInfoInput(sf::Event& event);
+    void drawInfoScreen(sf::RenderWindow& window);
     void drawCompletedScreen();
     void handleCompletedInput(sf::Event& event);
     bool isNextLevelButtonPressed();
     void setNextLevelButtonPressed(bool value);
+    void drawLastLevelCompletedScreen();
 
     void drawDeathScreen(sf::RenderWindow& window);
     void handleDeathInput(sf::Event& event);
-
+    bool isInfoButtonPressed();
     void update();
 
     int level1Completed;
@@ -55,6 +60,9 @@ private:
 
     sf::Texture level1ButtonTexture;
     sf::Texture level2ButtonTexture;
+    sf::Texture level3ButtonTexture;
+    sf::Texture level4ButtonTexture;
+    sf::Texture level5ButtonTexture;
     sf::Texture generateLevelButtonTexture;
 
     sf::Sprite startButton;
@@ -63,6 +71,9 @@ private:
     sf::Sprite background;
     sf::Sprite level1Button;
     sf::Sprite level2Button;
+    sf::Sprite level3Button;
+    sf::Sprite level4Button;
+    sf::Sprite level5Button;
     sf::Sprite generateLevelButton;
 
     sf::Sprite pauseText;
@@ -72,16 +83,21 @@ private:
 
     sf::Font font;
     sf::Text levelFinishedText;
+    sf::Text allLevelsFinishedText;
+    sf::Text infoText;
 
     bool startButtonPressed;
     bool exitButtonPressed;
     bool settingsButtonPressed;
+    bool infoButtonPressed;
 
     bool resumeButtonPressed;
     bool exitToMainButtonPressed;
-
     bool level1ButtonPressed;
     bool level2ButtonPressed;
+    bool level3ButtonPressed;
+    bool level4ButtonPressed;
+    bool level5ButtonPressed;
     bool generateLevelButtonPressed;
 
     sf::Texture completedScreenTexture;

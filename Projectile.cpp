@@ -7,9 +7,6 @@ Projectile::Projectile(sf::Vector2f startPosition, sf::Vector2f targetPosition, 
     if (!texture.loadFromFile(texturePath)) {
         std::cout << "B³¹d podczas ³adowania tekstury pocisku\n";
     }
-    else {
-        std::cout << "Tekstura pocisku za³adowana poprawnie\n";
-    }
     sprite.setScale(0.25, 0.25);
     sf::Vector2f halfSize(sprite.getLocalBounds().width / 2.0 + 36*0.25, sprite.getLocalBounds().height / 2.0 + 86*0.25);
 

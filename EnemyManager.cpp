@@ -71,6 +71,21 @@ void EnemyManager::loadEnemiesFromFile(const std::string& filename, ProjectileMa
 				sf::Vector2f enemyPosition(i * 128 + 64, j * 128 + 64); // oblicz pozycjê przeciwnika na podstawie indeksów tablicy
 				addEnemy(enemyPosition, projectileManager, 100, EnemyType::Soldier); // dodaj przeciwnika na obliczonej pozycji
 			}
+			else if (enemyType == '3') // jeœli na danej pozycji jest steve
+			{
+				sf::Vector2f enemyPosition(i * 128 + 64, j * 128 + 64); // oblicz pozycjê przeciwnika na podstawie indeksów tablicy
+				addEnemy(enemyPosition, projectileManager, 100, EnemyType::Steve); // dodaj przeciwnika na obliczonej pozycji
+			}
+			else if (enemyType == '4') // jeœli na danej pozycji pies
+			{
+				sf::Vector2f enemyPosition(i * 128 + 64, j * 128 + 64); // oblicz pozycjê przeciwnika na podstawie indeksów tablicy
+				addEnemy(enemyPosition, projectileManager, 100, EnemyType::Dog); // dodaj przeciwnika na obliczonej pozycji
+			}
+			else if (enemyType == '5') // jeœli na danej pozycji pies2
+			{
+				sf::Vector2f enemyPosition(i * 128 + 64, j * 128 + 64); // oblicz pozycjê przeciwnika na podstawie indeksów tablicy
+				addEnemy(enemyPosition, projectileManager, 100, EnemyType::Dog2); // dodaj przeciwnika na obliczonej pozycji
+			}
 		}
 	}
 	file.close();

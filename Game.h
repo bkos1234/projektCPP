@@ -38,4 +38,6 @@ private:
 	int currentLevel;
 	int deadEnemiesCount;
 	int totalEnemiesCount;
+
+	bool isLevelRandom;
 };

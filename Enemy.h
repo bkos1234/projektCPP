@@ -5,7 +5,10 @@ class ProjectileManager; // Forward declaration
 enum class EnemyType
 {
 	Dinosaur,
-	Soldier
+	Soldier,
+	Steve,
+	Dog,
+	Dog2
 };
 
 class Enemy

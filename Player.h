@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-class Environment; // Forward declaration
-class ProjectileManager; // Forward declaration
+class Environment;
+class ProjectileManager;
 
 class Player
 {
@@ -35,7 +35,7 @@ private:
 	sf::Sprite sprite;
 	sf::Vector2f position;
 	sf::Vector2f lastSafePosition;
-	float speed = 2;
+	float speed = 10;
 	sf::Vector2f pozycja0 = { 0,0 };
 	int health;
 	int maxHealth;

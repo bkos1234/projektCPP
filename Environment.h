@@ -19,6 +19,7 @@ public:
 	void addCollisionBox(int objectType, int i, int j, int tileSize, int treeWidth, int treeHeight);
 	std::vector<sf::FloatRect> waterCollisionBoxes;
 	std::vector<sf::FloatRect> treeCollisionBoxes;
+	std::vector<sf::FloatRect> tree2CollisionBoxes;
 	std::vector<sf::FloatRect> stoneCollisionBoxes;
 	std::vector<sf::FloatRect> lavaCollisionBoxes;
 	std::vector<sf::FloatRect> carCollisionBoxes;
@@ -28,10 +29,11 @@ public:
 	void generateMapData();
 	void reset();
 	void clearSprites();
-private:
 
+private:
 	sf::Texture grassTexture;
 	sf::Texture treeTexture;
+	sf::Texture tree2Texture;
 	sf::Texture sandTexture;
 	sf::Texture waterTexture;
 	sf::Texture rockTexture;
